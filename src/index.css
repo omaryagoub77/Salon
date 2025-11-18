@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Custom color palette */
+:root {
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #C9A000;
+  --color-beige-50: #FDF6EE;
+  --color-beige-100: #F5E4CC;
+  --color-beige-500: #E1C184;
+}
+
+/* Apply custom colors to Tailwind */
+@theme {
+  --color-gold-500: var(--color-gold-500);
+  --color-gold-600: var(--color-gold-600);
+  --color-beige-50: var(--color-beige-50);
+  --color-beige-100: var(--color-beige-100);
+  --color-beige-500: var(--color-beige-500);
+}
+
+/* Font family */
+body {
+  font-family: 'Poppins', 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* Base styles */
+@layer base {
+  body {
+    @apply text-gray-900 bg-beige-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+/* Utilities */
+@layer utilities {
+  .text-gold-500 {
+    color: var(--color-gold-500);
+  }
+  
+  .bg-gold-500 {
+    background-color: var(--color-gold-500);
+  }
+  
+  .bg-beige-50 {
+    background-color: var(--color-beige-50);
+  }
+  
+  .border-gold-500 {
+    border-color: var(--color-gold-500);
+  }
+  
+  .hover\:bg-gold-600:hover {
+    background-color: var(--color-gold-600);
+  }
+  
+  .focus\:ring-gold-500:focus {
+    --tw-ring-color: var(--color-gold-500);
+  }
+}
