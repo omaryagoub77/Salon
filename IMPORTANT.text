@@ -1,0 +1,65 @@
+Act as a senior full-stack developer and code auditor. Your task is to perform a gap analysis between the existing public-facing website and the Firebase database structure I provided earlier. You will then implement the missing features or components to ensure the website fully utilizes all available data.
+
+### **Core Principles & Rules**
+
+1.  **Do Not Delete or Replace:** Do not delete or significantly refactor existing website components or pages. Your primary goal is to enhance existing components by adding missing functionality or creating new, small, focused components when necessary.
+2.  **Focus on the Public Site:** Focus your analysis and implementation on the public-facing website components (likely in a directory like `src/website/` or under public routes). Do not touch the admin panel.
+3.  **Reuse First:** Before creating a new component, check if an existing one can be extended or if a reusable component from `src/components/ui/` can be used.
+4.  **Explain Your Changes:** For each change or new component you create, provide a brief comment or summary explaining what you added and why.
+
+---
+
+### **Step 1: Analysis Phase**
+
+First, analyze the existing website pages (`HomePage`, `ServicesPage`, `GalleryPage`, etc.). Compare each page against the corresponding Firebase collection data from the analysis. Identify specific gaps where data from the database is available but not being used on the website.
+
+### **Step 2: Implementation Phase**
+
+Based on your analysis, implement the missing features. Use the following checklist as a guide for potential gaps to investigate and fill:
+
+#### **`settings` Collection Integration:**
+*   **Header & Footer:** Check if the website's header and footer are dynamically pulling the `salonName`, `logo`, `phone`, `email`, `address`, and `socialLinks` from the `settings` collection. If not, integrate this data so the site owner can update them from the admin panel.
+*   **Hero Section:** Ensure the `HomePage` hero section is using the `heroTitle`, `heroSubtitle`, and `bannerImage` from the `settings` collection.
+
+#### **`stylists` Collection Enhancement:**
+*   **Display Specialty:** On the stylists page, check if each stylist's `specialty` is being displayed.
+*   **Link Services:** If a stylist is selected, can the user see the list of services they perform (using the `services` array of IDs)? If this feature is missing, implement it.
+
+#### **`reviews` Collection Logic:**
+*   **Filtering:** This is critical. Ensure the website is **only displaying reviews where `approved: true` and `hidden: false`**. If the current implementation fetches all reviews, add this filtering logic immediately.
+
+#### **`services` & `appointments` Collection:**
+*   **Booking Flow:** Check if there is a clear "Book Now" call-to-action on the `ServicesPage` or `StylistsPage` that leads to a booking form.
+*   **Booking Form:** If a booking form exists, verify it's creating new documents in the `appointments` collection with the correct default `status: 'pending'`. If the form is missing, create it.
+
+#### **`gallery` Collection Enhancement:**
+*   **Categorization:** Check if the gallery page has functionality to filter or group images by the `category` field. If not, add this feature.
+
+#### **Security Check:**
+*   **`clients` Collection:** Verify that the `clients` collection is **NOT** accessible or readable from any public-facing component. This data should be strictly admin-only.
+
+### **Final Output**
+
+Begin with your analysis. Report back to me with a list of the gaps you found. Then, proceed to implement the necessary changes to fill those gaps, following all the rules above.
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"CONVERT THIS TO PUT ON THE WEB AND TAKE TO THE ADMIN "
+Analyze the React project in the `src` directory. I need two main things:
+
+1.  **Firebase Firestore Schema:**
+    *   List all the Firestore collections used in this project.
+    *   For each collection, list the document fields and their likely data types (e.g., `title: String`, `author: Object`, `tags: Array`).
+    *   Show me the file paths where each collection is being accessed (read/write).
+
+2.  **Non-Firebase Components:**
+    *   List all React components in `src/components` that do NOT use Firebase.
+    *   For each one, give a one-sentence description of its purpose and list its props.
+
+Present the results clearly using headings and lists.

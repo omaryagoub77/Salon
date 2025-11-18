@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { db } from '../firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { useFirestore } from '../hooks/useFirestore';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,27 @@ const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  
+  const { data: settingsDocs, loading, error } = useFirestore('settings');
+  const settings = settingsDocs?.[0] || {};
+  
+  // Handle loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16 bg-beige-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Handle error state
+  if (error) {
+    console.error('Error loading settings:', error);
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +76,11 @@ const ContactPage = () => {
       setIsSubmitting(false);
     }
   };
+  
+  // Format day names (e.g., "monday" -> "Monday")
+  const formatDayName = (day) => {
+    return day.charAt(0).toUpperCase() + day.slice(1);
+  };
 
   return (
     <div className="min-h-screen py-16 bg-beige-50">
@@ -84,7 +111,7 @@ const ContactPage = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Our Location</h3>
-                  <p className="mt-1 text-gray-600">123 Beauty Street, New York, NY 10001</p>
+                  <p className="mt-1 text-gray-600">{settings?.address || '123 Beauty Street, New York, NY 10001'}</p>
                 </div>
               </div>
               
@@ -96,7 +123,7 @@ const ContactPage = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Phone</h3>
-                  <p className="mt-1 text-gray-600">(555) 123-4567</p>
+                  <p className="mt-1 text-gray-600">{settings?.phone || '(555) 123-4567'}</p>
                 </div>
               </div>
               
@@ -108,7 +135,7 @@ const ContactPage = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                  <p className="mt-1 text-gray-600">info@luxurysalon.com</p>
+                  <p className="mt-1 text-gray-600">{settings?.email || 'info@luxurysalon.com'}</p>
                 </div>
               </div>
               
@@ -121,9 +148,17 @@ const ContactPage = () => {
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Opening Hours</h3>
                   <div className="mt-1 text-gray-600">
-                    <p>Monday - Friday: 9am - 8pm</p>
-                    <p>Saturday: 8am - 9pm</p>
-                    <p>Sunday: 10am - 6pm</p>
+                    {settings?.openingHours ? (
+                      Object.entries(settings.openingHours).map(([day, hours]) => (
+                        <p key={day}>{formatDayName(day)}: {hours}</p>
+                      ))
+                    ) : (
+                      <>
+                        <p>Monday - Friday: 9am - 8pm</p>
+                        <p>Saturday: 8am - 9pm</p>
+                        <p>Sunday: 10am - 6pm</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
