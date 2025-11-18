@@ -29,6 +29,12 @@ const BookingPage = () => {
       )
     : stylists;
 
+  // Debugging: Log the data to see what's happening
+  console.log('Services:', services);
+  console.log('Stylists:', stylists);
+  console.log('Selected Service:', selectedService);
+  console.log('Filtered Stylists:', filteredStylists);
+
   // Generate time slots (9:00 AM to 6:00 PM)
   const generateTimeSlots = () => {
     const slots = [];
@@ -219,7 +225,7 @@ const BookingPage = () => {
                 onClick={() => setStep(1)}
                 className="mr-4 text-gold-500 hover:text-gold-600"
               >
-                ← Back
+                ← Back to Services
               </button>
               <h2 className="text-2xl font-bold text-gray-900">Select a Stylist</h2>
             </div>
@@ -234,20 +240,44 @@ const BookingPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredStylists.map((stylist) => (
+                {/* Show filtered stylists if there are any, otherwise show all stylists */}
+                {(filteredStylists.length > 0 ? filteredStylists : stylists).map((stylist) => (
                   <div
                     key={stylist.id}
-                    className="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all duration-300"
+                    className="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-gold-500"
                     onClick={() => handleStylistSelect(stylist)}
                   >
                     <div className="flex items-center">
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                      {stylist.image ? (
+                        <img 
+                          src={stylist.image} 
+                          alt={stylist.name} 
+                          className="w-16 h-16 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                      )}
                       <div className="ml-4">
                         <h3 className="text-xl font-bold text-gray-900">{stylist.name}</h3>
                         <p className="text-gold-500">{stylist.specialty}</p>
                         <p className="text-gray-600 text-sm mt-1">{stylist.workingHours}</p>
                       </div>
                     </div>
+                    {stylist.services && (
+                      <div className="mt-4">
+                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Specializes in:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {stylist.services.slice(0, 3).map((service, idx) => (
+                            <span 
+                              key={idx} 
+                              className="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs"
+                            >
+                              {service}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

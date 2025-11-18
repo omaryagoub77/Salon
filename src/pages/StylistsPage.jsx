@@ -1,9 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useFirestore } from '../hooks/useFirestore';
+import { useNavigate } from 'react-router-dom';
 
 const StylistsPage = () => {
   const { data: stylists, loading } = useFirestore('stylists');
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    navigate('/booking');
+  };
 
   return (
     <div className="min-h-screen py-16 bg-beige-50">
@@ -69,7 +75,10 @@ const StylistsPage = () => {
                       <p className="text-sm text-gray-500">Working Hours</p>
                       <p className="text-sm font-medium">{stylist.workingHours}</p>
                     </div>
-                    <button className="bg-gold-500 hover:bg-gold-600 text-black px-4 py-2 rounded-full text-sm font-medium transition duration-300">
+                    <button 
+                      className="bg-gold-500 hover:bg-gold-600 text-black px-4 py-2 rounded-full text-sm font-medium transition duration-300"
+                      onClick={handleBookNow}
+                    >
                       Book Now
                     </button>
                   </div>
