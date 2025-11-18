@@ -83,9 +83,11 @@ const ServicesPage = () => {
                   <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 text-sm">{service.duration} mins</span>
+                    <a href="#/booking">
                     <button className="bg-gold-500 hover:bg-gold-600 text-black px-4 py-2 rounded-full text-sm font-medium transition duration-300">
                       Book Now
                     </button>
+                    </a>
                   </div>
                 </div>
               </motion.div>
